@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2066376F-087F-4524-AF57-6B60F02F191C}</ProjectGuid>
+    <ProjectGuid>{96A72187-1D86-46CD-828F-482D1DA21B8E}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>CSharpBeginner</RootNamespace>
-    <AssemblyName>CSharpBeginner</AssemblyName>
+    <RootNamespace>CSharpAdvanced</RootNamespace>
+    <AssemblyName>CSharpAdvanced</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -42,11 +42,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Lists.cs" />
+    <Compile Include="Book.cs" />
+    <Compile Include="BookRepository.cs" />
+    <Compile Include="MailService.cs" />
+    <Compile Include="MessageService.cs" />
+    <Compile Include="Nullable.cs" />
+    <Compile Include="Photo.cs" />
+    <Compile Include="PhotoFilters.cs" />
+    <Compile Include="PhotoProcessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Strings.cs" />
-    <Compile Include="StringUtility.cs" />
+    <Compile Include="StringExtensions.cs" />
+    <Compile Include="Utilities.cs" />
+    <Compile Include="Video.cs" />
+    <Compile Include="VideoEncoder.cs" />
+    <Compile Include="VideoEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
