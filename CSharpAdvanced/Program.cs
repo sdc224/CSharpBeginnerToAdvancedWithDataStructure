@@ -1,13 +1,30 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Program.cs" company="SDCWORLD">
+//   Sourodeep Chatterjee
+// </copyright>
+// <summary>
+//   Defines the Program type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace CSharpAdvanced
 {
-    class Program
+    using System;
+    using System.IO;
+    using System.Threading.Tasks;
+
+    /// <summary>
+    /// The program.
+    /// </summary>
+    public class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// The main.
+        /// </summary>
+        /// <param name="args">
+        /// The args.
+        /// </param>
+        public static void Main(string[] args)
         {
             #region Generics
 
@@ -140,7 +157,7 @@ namespace CSharpAdvanced
 
             #region Exception Handling
 
-            try
+            /*try
             {
                 var streamReader = new StreamReader(@"d:\file.zip");
                 var content = streamReader.ReadToEnd();
@@ -148,8 +165,7 @@ namespace CSharpAdvanced
             catch (Exception)
             {
                 Console.WriteLine("Sorry, an unexpected error occurred!");
-            }
-
+            }*/
 
             #endregion
 
@@ -159,6 +175,68 @@ namespace CSharpAdvanced
             // In WPF, ASP.NET
 
             #endregion
+
+            #region Parallel Programming in .NET
+
+            #region Task Programming
+
+            // Part 1
+            /*Task.Factory.StartNew(() => Write('.'));
+
+            var task = new Task(() => Write('?'));
+            task.Start();
+
+            Write('-');*/
+
+            // Part 2
+            // You can use an object also
+            /*var task = new Task(Write, "hello");
+            task.Start();
+
+            Task.Factory.StartNew(Write, 123);*/
+
+            // Part 3
+            var text1 = "testing";
+            var text2 = "this";
+            var task1 = new Task<int>(TextLength, text1);
+            task1.Start();
+
+            var task2 = Task.Factory.StartNew(TextLength, text2);
+
+            Console.WriteLine($"Length of '{text1}' is {task1.Result}");
+            Console.WriteLine($"Length of '{text2}' is {task2.Result}");
+
+            Console.ReadKey();
+
+            #endregion
+
+            #endregion
+        }
+
+        public static void Write(char c)
+        {
+            var i = 1000;
+
+            while (i-- > 0)
+            {
+                Console.Write(c);
+            }
+        }
+
+        public static void Write(object o)
+        {
+            var i = 1000;
+
+            while (i-- > 0)
+            {
+                Console.Write(o);
+            }
+        }
+
+        public static int TextLength(object o)
+        {
+            Console.WriteLine($"\nTask with id {Task.CurrentId} processing object {o}...");
+            return o.ToString().Length;
         }
 
 /*
