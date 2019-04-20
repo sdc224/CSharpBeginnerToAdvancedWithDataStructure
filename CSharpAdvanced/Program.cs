@@ -11,6 +11,7 @@ namespace CSharpAdvanced
 {
     using System;
     using System.IO;
+    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -196,7 +197,7 @@ namespace CSharpAdvanced
             Task.Factory.StartNew(Write, 123);*/
 
             // Part 3
-            var text1 = "testing";
+            /*var text1 = "testing";
             var text2 = "this";
             var task1 = new Task<int>(TextLength, text1);
             task1.Start();
@@ -204,9 +205,126 @@ namespace CSharpAdvanced
             var task2 = Task.Factory.StartNew(TextLength, text2);
 
             Console.WriteLine($"Length of '{text1}' is {task1.Result}");
-            Console.WriteLine($"Length of '{text2}' is {task2.Result}");
+            Console.WriteLine($"Length of '{text2}' is {task2.Result}");*/
+
+            // Part 4
+            // Cancelling of a Task
+            
+            /*var cts = new CancellationTokenSource();
+            var token = cts.Token;*/
+            
+            // Part 4 a.
+            /*var t = new Task(
+                () =>
+                    {
+                        var i = 0;
+                        while (true)
+                        {
+                            if (token.IsCancellationRequested)
+                            {
+                                break;
+                            }
+
+                            Console.WriteLine($"{i++}\t");
+                        }
+                    },
+                token);
+
+            t.Start();
 
             Console.ReadKey();
+            cts.Cancel();
+             */
+
+            // Part 4 b. Using Exceptions
+            /*var t = new Task(
+                () =>
+                    {
+                        var i = 0;
+                        while (true)
+                        {
+                            if (token.IsCancellationRequested)
+                            {
+                                throw new OperationCanceledException();
+                            }
+
+                            Console.WriteLine($"{i++}\t");
+                        }
+                    },
+                token);
+
+            t.Start();*/
+
+            // Part 4 c. Most Canonical Way(TPL prescribed)
+            /*var t = new Task(
+                () =>
+                    {
+                        var i = 0;
+                        while (true)
+                        {
+                            token.ThrowIfCancellationRequested();
+                            Console.WriteLine($"{i++}\t");
+                        }
+                    },
+                token);
+
+            t.Start();*/
+
+            // Part 5
+            // Message on Cancellation
+            /*token.Register(() => Console.WriteLine("Cancellation requested!"));
+
+            var t = new Task(
+                () =>
+                    {
+                        var i = 0;
+                        while (true)
+                        {
+                            token.ThrowIfCancellationRequested();
+                            Console.WriteLine($"{i++}\t");
+                        }
+                    },
+                token);
+
+            t.Start();
+
+            Task.Factory.StartNew(
+                () =>
+                    {
+                        token.WaitHandle.WaitOne();
+                        Console.WriteLine("Wait handle has been released! Cancellation has been requested!");
+                    });
+
+            Console.ReadKey();
+            cts.Cancel();*/
+
+            // Part 6
+            // More than one Cancellation Source
+            var planned = new CancellationTokenSource();
+            var preventative = new CancellationTokenSource();
+            var emergency = new CancellationTokenSource();
+
+            var paranoid = CancellationTokenSource.CreateLinkedTokenSource(
+                planned.Token,
+                preventative.Token,
+                emergency.Token);
+
+            var t = new Task(
+                () =>
+                    {
+                        var i = 0;
+                        while (true)
+                        {
+                            paranoid.Token.ThrowIfCancellationRequested();
+                            Console.WriteLine($"{i++}\t");
+                        }
+                    },
+                paranoid.Token);
+
+            t.Start();
+
+            Console.ReadKey();
+            preventative.Cancel();
 
             #endregion
 
